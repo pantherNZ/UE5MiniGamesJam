@@ -25,8 +25,6 @@ public class Minigames : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] {
 			"Minigames",
-			"Minigames/Variant_Horror",
-			"Minigames/Variant_Horror/UI",
 			"Minigames/Variant_Shooter",
 			"Minigames/Variant_Shooter/AI",
 			"Minigames/Variant_Shooter/UI",
