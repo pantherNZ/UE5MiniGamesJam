@@ -64,7 +64,9 @@ public:
     UPROPERTY( EditAnywhere )
     TArray<FLevelSequenceData> LevelData;
 
-private:
+    UPROPERTY( BlueprintReadOnly )
     float curTime = 0.0f;
+
+private:
     TArray<FLevelSequenceData> RuntimeLevelData;
 };

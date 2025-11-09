@@ -42,15 +42,7 @@ FString UMainGameInstance::GetStrippedLevelName(FString FullMapName ) const
 
 FString UMainGameInstance::GetCurrentLevelName() const
 {
-	UWorld* World = GetWorld();
-	if( World )
-	{
-		// GetMapName() returns the full path (e.g., /Game/Maps/MyLevelName).
-		// You might want to strip the path to get just the name.
-		FString FullMapName = World->GetMapName();
-		return GetStrippedLevelName( FullMapName );
-	}
-	return FString( TEXT( "Invalid World" ) );
+	return UGameplayStatics::GetCurrentLevelName( GetWorld() );
 }
 
 void UMainGameInstance::LoadComplete( const float LoadTime, const FString& MapName )
@@ -73,7 +65,10 @@ void UMainGameInstance::Tick( float DeltaTime )
 
 void UMainGameInstance::NextLevel()
 {
+	UE_LOG( LogTemp, Log, TEXT( "WTF IS THIS SHIT" ) );
+
 	const auto& nextLevel = RuntimeLevelData[LevelSequence].Levels[LevelIndex];
+	UE_LOG( LogTemp, Log, TEXT( "Loading next level: %s" ), *nextLevel.Level.GetAssetName() );
 
 	UGameplayStatics::LoadStreamLevel(
 		this,
