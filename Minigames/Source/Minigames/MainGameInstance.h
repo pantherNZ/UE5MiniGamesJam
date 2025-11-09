@@ -39,7 +39,8 @@ public:
     TStatId GetStatId() const override { return Super::GetStatID(); }
 
 private:
-    FString GetCurrentLevelName();
+    FString GetStrippedLevelName( FString FullMapName ) const;
+    FString GetCurrentLevelName() const;
     void NextLevel();
     void CompleteLevel();
     void RestartGame();

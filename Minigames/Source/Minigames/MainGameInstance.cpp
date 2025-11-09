@@ -10,7 +10,7 @@ void UMainGameInstance::Init()
 {
 	RuntimeLevelData = LevelData;
 
-	UE_LOG( LogTemp, Log, TEXT( "Init: %s" ), *GetCurrentLevelName() );
+	UE_LOG( LogTemp, Log, TEXT( "Init: %s %s" ), *GetCurrentLevelName(), *HomeLevel->GetMapName() );
 
 	for( auto&& sequence : RuntimeLevelData )
 	{
@@ -22,13 +22,25 @@ void UMainGameInstance::Init()
 		}
 	}
 
-	if( GetCurrentLevelName() == HomeLevel->GetMapName() )
+	if( GetCurrentLevelName() == GetStrippedLevelName(HomeLevel->GetMapName()) )
 	{
 		curTime = GameStartTimeSec;
 	}
 }
 
-FString UMainGameInstance::GetCurrentLevelName()
+FString UMainGameInstance::GetStrippedLevelName(FString FullMapName ) const
+{
+	// Optional: Remove the path prefix to get just the level name
+	int32 LastSlashIndex;
+	if( FullMapName.FindLastChar( '/', LastSlashIndex ) )
+	{
+		return FullMapName.RightChop( LastSlashIndex + 1 );
+	}
+	FullMapName.RemoveFromStart( GetWorld()->StreamingLevelsPrefix );
+	return FullMapName; // Return full name if no slash found
+}
+
+FString UMainGameInstance::GetCurrentLevelName() const
 {
 	UWorld* World = GetWorld();
 	if( World )
@@ -36,14 +48,7 @@ FString UMainGameInstance::GetCurrentLevelName()
 		// GetMapName() returns the full path (e.g., /Game/Maps/MyLevelName).
 		// You might want to strip the path to get just the name.
 		FString FullMapName = World->GetMapName();
-
-		// Optional: Remove the path prefix to get just the level name
-		int32 LastSlashIndex;
-		if( FullMapName.FindLastChar( '/', LastSlashIndex ) )
-		{
-			return FullMapName.RightChop( LastSlashIndex + 1 );
-		}
-		return FullMapName; // Return full name if no slash found
+		return GetStrippedLevelName( FullMapName );
 	}
 	return FString( TEXT( "Invalid World" ) );
 }
