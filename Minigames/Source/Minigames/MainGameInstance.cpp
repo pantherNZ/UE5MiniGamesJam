@@ -65,14 +65,12 @@ void UMainGameInstance::Tick( float DeltaTime )
 
 void UMainGameInstance::NextLevel()
 {
-	UE_LOG( LogTemp, Log, TEXT( "WTF IS THIS SHIT" ) );
-
 	const auto& nextLevel = RuntimeLevelData[LevelSequence].Levels[LevelIndex];
-	UE_LOG( LogTemp, Log, TEXT( "Loading next level: %s" ), *nextLevel.Level.GetAssetName() );
+	UE_LOG( LogTemp, Log, TEXT( "Loading next level: %s" ), *nextLevel.Level->GetMapName() );
 
 	UGameplayStatics::LoadStreamLevel(
 		this,
-		FName( *nextLevel.Level.GetAssetName() ),
+		FName( *nextLevel.Level->GetMapName() ),
 		true, // bMakeVisibleAfterLoad
 		true, // bShouldBlockOnLoad
 		FLatentActionInfo{}
